@@ -8,11 +8,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.is;
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = HelloController.class)
+@WebMvcTest
 /*
 @ExtendWith(SpringExtension.class)
 JUnit4 :@RunWith(SpringRunner.class)
@@ -48,5 +47,19 @@ public class HelloControllerTest {
         3. mvc.perform의 결과(응답 본문 내용)를 검증 : "hello"가 맞는지 검증
 
          */
+    }
+
+    @Test
+    public void helloDto가_리턴된다() throws Exception{
+        String name="hello";
+        int amount=1000;
+        mvc.perform(
+                get("/hello/dto")
+                        .param("name",name)
+                        .param("amount",String.valueOf(amount)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name",is(name)))
+                .andExpect(jsonPath("$.amount",is(amount)));
+
     }
 }
