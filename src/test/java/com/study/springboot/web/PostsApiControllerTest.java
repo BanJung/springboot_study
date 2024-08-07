@@ -1,7 +1,9 @@
 package com.study.springboot.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.springboot.domain.posts.Posts;
 import com.study.springboot.domain.posts.PostsRepository;
+import com.study.springboot.web.dto.PostsResponseDto;
 import com.study.springboot.web.dto.PostsSaveRequestDto;
 import com.study.springboot.web.dto.PostsUpdateRequestDto;
 import org.junit.After;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,6 +115,35 @@ class PostsApiControllerTest {
     }
 
     @Test
-    void findById() {
+    public void Posts_id로_조회한다() throws Exception {
+        //given
+        // 1. 조회하려면 등록해야함
+        String saveTitle="title";
+        String saveContent="content";
+        String saveAuthor="author";
+
+        Posts savePosts = postsRepository.save(Posts.builder()
+                .title(saveTitle)
+                .content(saveContent)
+                .author(saveAuthor)
+                .build());
+
+        Long findId = savePosts.getId();
+
+        // 2. 요청을 보낼 url 설정
+        String url = "http://localhost:" + port + "/api/v1/posts/" + findId;
+
+        // when
+        ResponseEntity<LinkedHashMap> responseEntity = restTemplate.getForEntity(url, LinkedHashMap.class);
+        LinkedHashMap<String, Object> responseBody = responseEntity.getBody();
+
+        // then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseBody).isNotNull();
+        assertThat(Long.valueOf(responseBody.get("id").toString())).isEqualTo(findId);
+        assertThat(responseBody.get("title").toString()).isEqualTo(saveTitle);
+        assertThat(responseBody.get("content").toString()).isEqualTo(saveContent);
+        assertThat(responseBody.get("author")).isEqualTo(saveAuthor);
+
     }
 }

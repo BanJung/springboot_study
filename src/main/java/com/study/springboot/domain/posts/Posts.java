@@ -1,5 +1,6 @@
 package com.study.springboot.domain.posts;
 
+import com.study.springboot.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +22,7 @@ SalesManager.java -> sales_manager table
 Entity 클래스에서는 절대 Setter 메서드를 만들지 않음
 - 클래스의 인스턴스 값이 언제 어디서 변해야하는지 코드상으로 명확하게 구분할 수 없어짐
  */
-public class Posts {
+public class Posts extends BaseTimeEntity {
     /*
     Posts 클래스는 실제 DB의 테이블과 매칭될 클래스(Entity 클래스)
     DB 데이터에 작업할 경우 실제 쿼리보다는 Entity 클래스의 수정을 통해 작업(JPA)
