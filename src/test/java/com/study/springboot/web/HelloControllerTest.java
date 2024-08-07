@@ -21,8 +21,8 @@ Spring의 기능을 JUnit 5 테스트에 적용하도록 확장
  /*
 @WebMvcTest(controllers = HelloController.class)
 Web(Spring MVC)에 집중할 수 있는 어노테이션
-선언할 경우 @Controller, @ControllerAdivce 등을 사용할 수 있음
-단, @Service, @Component, @Repository 등은 X
+선언할 경우 @Controller, @ControllerAdivce 등 외부 연동과 관련된 부분만 사용할 수 있음
+단, @Service, @Component, @Repository 등은 X. 즉, JPA 테스트 X
 */
 
 public class HelloControllerTest {
