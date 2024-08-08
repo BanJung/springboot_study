@@ -1,9 +1,7 @@
 package com.study.springboot.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.springboot.domain.posts.Posts;
 import com.study.springboot.domain.posts.PostsRepository;
-import com.study.springboot.web.dto.PostsResponseDto;
 import com.study.springboot.web.dto.PostsSaveRequestDto;
 import com.study.springboot.web.dto.PostsUpdateRequestDto;
 import org.junit.After;
@@ -23,7 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 /*
