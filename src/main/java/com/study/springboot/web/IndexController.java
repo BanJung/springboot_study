@@ -1,7 +1,9 @@
 package com.study.springboot.web;
 
+import com.study.springboot.config.auth.dto.SessionUser;
 import com.study.springboot.service.posts.PostsService;
 import com.study.springboot.web.dto.PostsResponseDto;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +18,15 @@ public class IndexController {
      뒤의 파일 확장자(.html)은 자동 지정
      */
     private final PostsService postsService;
+    private final HttpSession httpSession;
+
     @GetMapping("/")
     public String index(Model model){
         model.addAttribute("posts",postsService.findAllDesc());
+        SessionUser user=(SessionUser) httpSession.getAttribute("user");
+        if(user !=null){
+            model.addAttribute("userName",user.getName());
+        }
         return "index";
     }
     // src/main/resources/templates/index.html로 전환되어 View Resolver가 처리
