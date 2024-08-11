@@ -1,9 +1,14 @@
 package com.study.springboot.web;
 
+import com.study.springboot.config.auth.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -11,7 +16,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.is;
 @ExtendWith(SpringExtension.class)
-@WebMvcTest
+@WebMvcTest(controllers = HelloController.class,
+            excludeFilters = {
+            @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,classes = SecurityConfig.class)
+            }
+)
 /*
 @ExtendWith(SpringExtension.class)
 JUnit4 :@RunWith(SpringRunner.class)
@@ -35,6 +44,7 @@ public class HelloControllerTest {
     * MockMvc : 스프링 MVC 테스트의 시작점
      */
     @Test
+    @WithMockUser(roles = "USER")
     public void hello가_리턴된다() throws Exception{
         String hello="hello";
         mvc.perform(get("/hello"))
@@ -50,6 +60,7 @@ public class HelloControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void helloDto가_리턴된다() throws Exception{
         String name="hello";
         int amount=1000;
